@@ -58,3 +58,13 @@ int getSize() const
 {
     return size;
 }
+
+// Resets the board to its initial empty state
+void reset()
+{
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = 0; j < size; ++j)
+            grid[i][j] = ' ';
+    }
+}
