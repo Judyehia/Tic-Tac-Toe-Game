@@ -32,3 +32,17 @@ bool checkWin(char symbol) const
 
     return false; // no wins
 }
+
+// Checks whether the board is full
+bool isFull() const
+{
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = 0; j < size; ++j)
+        {
+            if (grid[i][j] == ' ')
+                return false;
+        }
+    }
+    return true;
+}
