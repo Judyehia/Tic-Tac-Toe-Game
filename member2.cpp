@@ -46,3 +46,15 @@ bool isFull() const
     }
     return true;
 }
+
+// Returns the value of the specified cell
+char getCell(int row, int col) const
+{
+    return grid[row][col];
+}
+
+// Returns the size of the board
+int getSize() const
+{
+    return size;
+}
