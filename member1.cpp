@@ -10,7 +10,7 @@ private:
 public:
     Board(int size = 3) {
         this->size = size;
-        grid.resize(size, vector<char>(size, '-'));
+        grid.resize(size, vector<char>(size, ' '));
     }
 
     void display() const {
@@ -32,7 +32,7 @@ public:
     bool isValidMove(int row, int col) const {
         return row >= 0 && row < size &&
                col >= 0 && col < size &&
-               grid[row][col] == '-';
+               grid[row][col] == ' ';
     }
 
     bool makeMove(int row, int col, char symbol) {
