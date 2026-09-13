@@ -18,6 +18,13 @@ A C++ Object-Oriented Programming project that implements a console-based Tic-Ta
 - AIPlayer
 - Game
 
+## Features
+- 3x3 Tic-Tac-Toe board
+- Move coordinates from 1 to 3
+- Input validation
+- Win and draw detection
+- Replay option after each round
+
 ## How to Run
 Compile and run the `final.cpp` file using a C++ compiler.
 
