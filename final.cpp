@@ -475,50 +475,48 @@ public:
         roundStopped = false;
     }
 
-    void start()
+   void start()
 {
-    roundStopped = false;
-
-    int choice;
+    srand(static_cast<unsigned int>(time(nullptr)));
 
     while (true)
     {
-        showMenu();
+        roundStopped = false;
 
-        if (!(cin >> choice))
+        int choice;
+
+        while (true)
         {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            showMenu();
 
-            cout << "Invalid input. Enter a number from 1 to 4.\n";
-            continue;
+            if (!(cin >> choice))
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                cout << "Invalid input. Enter a number from 1 to 4.\n";
+                continue;
+            }
+
+            if (choice >= 1 && choice <= 4)
+                break;
+
+            cout << "Invalid choice. Select 1, 2, 3, or 4.\n";
         }
 
-        if (choice >= 1 && choice <= 4)
-            break;
+        if (choice == 4)
+        {
+            cout << "Goodbye!\n";
+            return;
+        }
 
-        cout << "Invalid choice. Select 1, 2, 3, or 4.\n";
-    }
+        if (choice == 1)
+            setupPvP();
+        else if (choice == 2)
+            setupPvC(Difficulty::EASY);
+        else
+            setupPvC(Difficulty::HARD);
 
-    if (choice == 4)
-    {
-        cout << "Goodbye!\n";
-        return;
-    }
-
-    if (choice == 1)
-        setupPvP();
-    else if (choice == 2)
-        setupPvC(Difficulty::EASY);
-    else
-        setupPvC(Difficulty::HARD);
-
-    srand(static_cast<unsigned int>(time(nullptr)));
-
-    char replay;
-
-    do
-    {
         reset();
 
         cout << "\nEnter moves using row and column numbers from 1 to 3.\n";
@@ -548,21 +546,28 @@ public:
 
         displayResult();
 
-        while (true)
-        {
-            cout << "\nPlay again? (y/n): ";
-            cin >> replay;
+        char replay;
 
-            if (replay == 'y' || replay == 'Y' ||
-                replay == 'n' || replay == 'N')
-                break;
+while (true)
+{
+    cout << "\nPlay again? (y/n): ";
+    cin >> replay;
 
-            cout << "Invalid input. Please enter y or n.\n";
-        }
+    if (replay == 'y' || replay == 'Y' ||
+        replay == 'n' || replay == 'N')
+        break;
 
-    } while (replay == 'y' || replay == 'Y');
+    cout << "Invalid input. Please enter y or n.\n";
+}
 
+if (replay == 'n' || replay == 'N')
+{
     cout << "Goodbye!\n";
+    return;
+}
+
+cout << "\nReturning to main menu...\n";
+    }
 }
 
     void switchPlayer()
