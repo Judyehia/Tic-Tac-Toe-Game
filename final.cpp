@@ -21,12 +21,12 @@ public:
    void display() const {
     cout << "    ";
     for (int i = 0; i < size; ++i) {
-        cout << i << "   ";
+        cout << i + 1 << "   ";
     }
     cout << endl;
 
     for (int i = 0; i < size; ++i) {
-        cout << i << "   ";
+        cout << i + 1 << "   ";
 
         for (int j = 0; j < size; ++j) {
             cout << grid[i][j];
@@ -431,10 +431,10 @@ public:
         string name1, name2;
 
         cout << "Enter name for Player 1 (X): ";
-        cin >> name1;
+        getline(cin >> ws, name1);
 
         cout << "Enter name for Player 2 (O): ";
-        cin >> name2;
+        getline(cin, name2);
 
         player1 = new HumanPlayer(name1, 'X');
         player2 = new HumanPlayer(name2, 'O');
@@ -455,7 +455,7 @@ public:
         string name;
 
         cout << "Enter your name: ";
-        cin >> name;
+        getline(cin >> ws, name);
 
         player1 = new HumanPlayer(name, 'X');
         player2 = new AIPlayer("Computer", 'O', difficulty);
@@ -476,50 +476,52 @@ public:
     }
 
     void start()
+{
+    roundStopped = false;
+
+    int choice;
+
+    while (true)
     {
-        roundStopped = false;
+        showMenu();
 
-        int choice;
-
-        while (true)
+        if (!(cin >> choice))
         {
-            showMenu();
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (!(cin >> choice))
-            {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-                cout << "Invalid input. Enter a number from 1 to 4.\n";
-                continue;
-            }
-
-            if (choice >= 1 && choice <= 4)
-                break;
-
-            cout << "Invalid choice. Select 1, 2, 3, or 4.\n";
+            cout << "Invalid input. Enter a number from 1 to 4.\n";
+            continue;
         }
 
-        if (choice == 4)
-        {
-            cout << "Goodbye!\n";
-            return;
-        }
+        if (choice >= 1 && choice <= 4)
+            break;
 
-        if (choice == 1)
-            setupPvP();
+        cout << "Invalid choice. Select 1, 2, 3, or 4.\n";
+    }
 
-        else if (choice == 2)
-            setupPvC(Difficulty::EASY);
+    if (choice == 4)
+    {
+        cout << "Goodbye!\n";
+        return;
+    }
 
-        else
-            setupPvC(Difficulty::HARD);
+    if (choice == 1)
+        setupPvP();
+    else if (choice == 2)
+        setupPvC(Difficulty::EASY);
+    else
+        setupPvC(Difficulty::HARD);
 
+    srand(static_cast<unsigned int>(time(nullptr)));
+
+    char replay;
+
+    do
+    {
         reset();
 
-        srand(static_cast<unsigned int>(time(nullptr)));
-
-        cout << "\nEnter moves using row and column numbers from 0 to 2.\n";
+        cout << "\nEnter moves using row and column numbers from 1 to 3.\n";
 
         board.display();
 
@@ -530,7 +532,6 @@ public:
 
             if (aiPlayer != nullptr)
                 handleAIMove(aiPlayer);
-
             else
                 handleHumanMove(currentPlayer);
 
@@ -546,7 +547,23 @@ public:
         }
 
         displayResult();
-    }
+
+        while (true)
+        {
+            cout << "\nPlay again? (y/n): ";
+            cin >> replay;
+
+            if (replay == 'y' || replay == 'Y' ||
+                replay == 'n' || replay == 'N')
+                break;
+
+            cout << "Invalid input. Please enter y or n.\n";
+        }
+
+    } while (replay == 'y' || replay == 'Y');
+
+    cout << "Goodbye!\n";
+}
 
     void switchPlayer()
     {
@@ -575,15 +592,15 @@ public:
                 continue;
             }
 
-            if (row < 0 || row >= board.getSize() ||
-                col < 0 || col >= board.getSize())
-            {
-                cout << "Out of range. Use numbers from 0 to 2.\n";
-                continue;
-            }
+            if (row < 1 || row > board.getSize() ||
+    col < 1 || col > board.getSize())
+{
+    cout << "Out of range. Use numbers from 1 to 3.\n";
+    continue;
+}
 
-            if (board.makeMove(row, col, player->getSymbol()))
-                return;
+if (board.makeMove(row - 1, col - 1, player->getSymbol()))
+    return;
 
             cout << "That cell is occupied. Try another cell.\n";
         }
@@ -610,9 +627,9 @@ public:
         cout << aiPlayer->getName()
              << " (" << aiPlayer->getSymbol()
              << ") played row "
-             << row
+             << row + 1
              << ", column "
-             << col
+             << col + 1
              << ".\n";
     }
 
